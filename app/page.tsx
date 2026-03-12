@@ -75,6 +75,14 @@ export default function Home() {
 
           <div className="grid md:grid-cols-2 gap-8 items-center">
             <div>
+              {/* Hero-bilde mobil */}
+              <div className="md:hidden rounded-2xl overflow-hidden mb-6 aspect-video relative">
+                <img
+                  src="https://images.unsplash.com/photo-1543353071-087092ec393a?w=800&q=80"
+                  alt="Ferske ingredienser fra matkasse"
+                  className="w-full h-full object-cover"
+                />
+              </div>
               <h1 className="text-4xl md:text-5xl font-extrabold text-brand-charcoal mb-4 leading-[1.1]">
                 Beste matkasse{" "}
                 <span className="text-brand-terra">2026</span>
@@ -102,8 +110,20 @@ export default function Home() {
               </a>
             </div>
 
-            {/* Hero-statistikk */}
-            <div className="grid grid-cols-2 gap-3">
+            {/* Hero-bilde desktop */}
+            <div className="hidden md:block rounded-2xl overflow-hidden shadow-xl aspect-video relative">
+              <img
+                src="https://images.unsplash.com/photo-1543353071-087092ec393a?w=900&q=85"
+                alt="Ferske råvarer og ingredienser fra matkasse"
+                className="w-full h-full object-cover"
+              />
+              <div className="absolute bottom-3 right-3 bg-white/90 backdrop-blur-sm rounded-lg px-3 py-1.5 text-xs text-brand-muted">
+                📸 Illustrasjonsbilde
+              </div>
+            </div>
+
+            {/* Hero-statistikk desktop hidden - moved below */}
+            <div className="hidden grid-cols-2 gap-3">
               {[
                 { tall: "6", label: "matkasser testet", icon: "🥘" },
                 { tall: "40+", label: "måltider laget", icon: "🍳" },
