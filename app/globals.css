@@ -1,96 +1,186 @@
-@import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@0,9..144,400;0,9..144,600;0,9..144,700;1,9..144,400&family=Inter:wght@400;500;600;700&display=swap');
 @import "tailwindcss";
 
 @theme {
-  --color-brand-terra: #c05621;
-  --color-brand-terra-dark: #9c4221;
-  --color-brand-terra-light: #ed8936;
-  --color-brand-sage: #276749;
-  --color-brand-sage-light: #38a169;
-  --color-brand-sage-pale: #f0fff4;
-  --color-brand-beige: #faf7f2;
-  --color-brand-beige-dark: #f0e6d3;
-  --color-brand-charcoal: #2d3748;
-  --color-brand-muted: #718096;
+  /* Fargepalett — Fjordkraft-inspirert, varm og norsk */
+  --color-cream:        #faf6f0;
+  --color-cream-dark:   #f2ebe0;
+  --color-cream-border: #e8ddd0;
+  --color-terra:        #c05621;
+  --color-terra-dark:   #9c4221;
+  --color-terra-light:  #ed8936;
+  --color-terra-muted:  #fef0e6;
+  --color-espresso:     #2c1810;
+  --color-text:         #3d2b1f;
+  --color-muted:        #7d6b5e;
+  --color-sage:         #2d6a4f;
+  --color-sage-light:   #d8f3dc;
+  --color-white:        #ffffff;
 
-  --font-sans: "Inter", system-ui, sans-serif;
+  --font-serif: "Fraunces", Georgia, serif;
+  --font-sans:  "Inter", system-ui, sans-serif;
 
-  --shadow-card: 0 1px 3px rgba(0,0,0,0.08), 0 4px 16px rgba(0,0,0,0.06);
-  --shadow-card-hover: 0 4px 8px rgba(0,0,0,0.10), 0 12px 32px rgba(0,0,0,0.10);
+  --radius-pill: 9999px;
+  --radius-card: 20px;
+  --radius-sm:   12px;
+
+  --shadow-card: 0 1px 2px rgba(44,24,16,0.04), 0 4px 16px rgba(44,24,16,0.06);
+  --shadow-hover: 0 8px 32px rgba(44,24,16,0.12);
 }
 
 @layer base {
-  html {
-    scroll-behavior: smooth;
-  }
+  html { scroll-behavior: smooth; }
   body {
-    background-color: var(--color-brand-beige);
-    color: var(--color-brand-charcoal);
+    background-color: var(--color-cream);
+    color: var(--color-text);
     font-family: var(--font-sans);
     -webkit-font-smoothing: antialiased;
+    font-size: 17px;
+    line-height: 1.65;
   }
   h1, h2, h3, h4 {
+    font-family: var(--font-serif);
+    color: var(--color-espresso);
+    line-height: 1.15;
     font-weight: 700;
-    line-height: 1.2;
   }
+  h1 { font-size: clamp(2.2rem, 5vw, 3.5rem); }
+  h2 { font-size: clamp(1.6rem, 3vw, 2.2rem); font-weight: 600; }
+  h3 { font-size: 1.25rem; font-weight: 600; }
 }
 
 @layer components {
+  /* Pill-knapper — Fjordkraft-stil */
   .btn-primary {
-    display: inline-flex;
-    align-items: center;
-    gap: 0.5rem;
-    background-color: var(--color-brand-terra);
-    color: white;
-    font-weight: 600;
-    padding: 0.75rem 1.5rem;
-    border-radius: 0.5rem;
+    display: inline-flex; align-items: center; gap: 0.5rem;
+    background-color: var(--color-terra);
+    color: white; font-weight: 600;
+    padding: 0.875rem 2rem;
+    border-radius: var(--radius-pill);
     transition: all 0.2s;
-    box-shadow: 0 1px 2px rgba(0,0,0,0.1);
+    box-shadow: 0 2px 8px rgba(192,86,33,0.3);
+    font-family: var(--font-sans);
+    font-size: 0.95rem;
     text-decoration: none;
+    border: 2px solid transparent;
   }
   .btn-primary:hover {
-    background-color: var(--color-brand-terra-dark);
-    box-shadow: 0 4px 8px rgba(0,0,0,0.15);
+    background-color: var(--color-terra-dark);
+    transform: translateY(-1px);
+    box-shadow: 0 4px 16px rgba(192,86,33,0.35);
   }
-  .btn-secondary {
-    display: inline-flex;
-    align-items: center;
-    gap: 0.5rem;
-    background-color: white;
-    border: 2px solid var(--color-brand-terra);
-    color: var(--color-brand-terra);
+
+  .btn-outline {
+    display: inline-flex; align-items: center; gap: 0.5rem;
+    background: transparent;
+    color: var(--color-espresso);
+    border: 2px solid var(--color-espresso);
     font-weight: 600;
-    padding: 0.75rem 1.5rem;
-    border-radius: 0.5rem;
+    padding: 0.875rem 2rem;
+    border-radius: var(--radius-pill);
     transition: all 0.2s;
+    font-family: var(--font-sans);
+    font-size: 0.95rem;
     text-decoration: none;
   }
-  .btn-secondary:hover {
-    background-color: var(--color-brand-beige);
+  .btn-outline:hover {
+    background: var(--color-espresso);
+    color: white;
   }
+
+  .btn-ghost {
+    display: inline-flex; align-items: center; gap: 0.5rem;
+    background: white;
+    color: var(--color-terra);
+    border: 2px solid var(--color-cream-border);
+    font-weight: 600;
+    padding: 0.75rem 1.5rem;
+    border-radius: var(--radius-pill);
+    transition: all 0.2s;
+    font-size: 0.9rem;
+    text-decoration: none;
+  }
+  .btn-ghost:hover {
+    border-color: var(--color-terra);
+    background: var(--color-terra-muted);
+  }
+
+  /* Kort */
   .card {
-    background-color: white;
-    border-radius: 1rem;
+    background: white;
+    border-radius: var(--radius-card);
+    border: 1.5px solid var(--color-cream-border);
     box-shadow: var(--shadow-card);
-    transition: box-shadow 0.3s;
+    transition: box-shadow 0.3s, transform 0.2s;
     overflow: hidden;
-    padding: 1.5rem;
   }
   .card:hover {
-    box-shadow: var(--shadow-card-hover);
+    box-shadow: var(--shadow-hover);
+    transform: translateY(-2px);
   }
-  .badge-best {
-    display: inline-flex;
-    align-items: center;
-    gap: 0.25rem;
-    background-color: var(--color-brand-terra);
-    color: white;
-    font-size: 0.7rem;
-    font-weight: 700;
-    padding: 0.25rem 0.75rem;
-    border-radius: 9999px;
+  .card-winner {
+    border-color: var(--color-terra);
+    box-shadow: 0 0 0 3px rgba(192,86,33,0.15), var(--shadow-card);
+  }
+
+  /* Badge */
+  .badge {
+    display: inline-flex; align-items: center; gap: 0.35rem;
+    font-size: 0.75rem; font-weight: 700;
+    padding: 0.3rem 0.9rem;
+    border-radius: var(--radius-pill);
+    font-family: var(--font-sans);
+    letter-spacing: 0.02em;
     text-transform: uppercase;
-    letter-spacing: 0.05em;
   }
+  .badge-terra { background: var(--color-terra); color: white; }
+  .badge-sage  { background: var(--color-sage);  color: white; }
+  .badge-blue  { background: #1d4ed8; color: white; }
+
+  /* Trust-pill */
+  .trust-pill {
+    display: inline-flex; align-items: center; gap: 0.4rem;
+    background: white;
+    border: 1px solid var(--color-cream-border);
+    border-radius: var(--radius-pill);
+    padding: 0.35rem 0.9rem;
+    font-size: 0.78rem;
+    color: var(--color-muted);
+    font-family: var(--font-sans);
+  }
+
+  /* Prose */
+  .prose-article {
+    font-size: 1.0625rem;
+    line-height: 1.75;
+    color: var(--color-text);
+  }
+  .prose-article h2 {
+    font-family: var(--font-serif);
+    font-size: 1.6rem;
+    margin-top: 2.5rem;
+    margin-bottom: 0.75rem;
+    color: var(--color-espresso);
+  }
+  .prose-article h3 {
+    font-family: var(--font-serif);
+    font-size: 1.2rem;
+    margin-top: 1.75rem;
+    margin-bottom: 0.5rem;
+    color: var(--color-espresso);
+  }
+  .prose-article p { margin-bottom: 1.25rem; }
+  .prose-article ul { list-style: none; padding: 0; margin-bottom: 1.25rem; }
+  .prose-article ul li {
+    padding-left: 1.5rem;
+    position: relative;
+    margin-bottom: 0.5rem;
+  }
+  .prose-article ul li::before {
+    content: "–";
+    position: absolute; left: 0;
+    color: var(--color-terra);
+    font-weight: 700;
+  }
+  .prose-article strong { color: var(--color-espresso); font-weight: 600; }
 }
