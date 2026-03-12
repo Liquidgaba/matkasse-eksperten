@@ -1,7 +1,7 @@
 "use client";
 import Link from "next/link";
-import Image from "next/image";
 import StarRating from "./StarRating";
+import LogoAvatar from "./LogoAvatar";
 import { Check, X as XIcon, ExternalLink, ChevronRight } from "lucide-react";
 
 export interface Matkasse {
@@ -14,6 +14,8 @@ export interface Matkasse {
   ukentligPris: number;
   leverandor: string;
   logoUrl: string;
+  fallbackInitials: string;
+  fallbackColor: string;
   badge?: "best" | "billigst" | "fleksibel";
   fordeler: string[];
   ulemper: string[];
@@ -22,134 +24,117 @@ export interface Matkasse {
   tilbud?: string;
   bindingstid: string;
   levering: string;
+  ctaText: string;
 }
 
-const badgeMap: Record<string, { label: string; color: string }> = {
-  best:      { label: "🏆 Beste valg 2026", color: "bg-brand-terra text-white" },
-  billigst:  { label: "💰 Billigst", color: "bg-brand-sage text-white" },
-  fleksibel: { label: "🔄 Mest fleksibel", color: "bg-blue-600 text-white" },
+const badgeMap: Record<string, { label: string; className: string }> = {
+  best:      { label: "🏆 Beste valg", className: "bg-brand-terra text-white" },
+  billigst:  { label: "💰 Billigst", className: "bg-brand-sage text-white" },
+  fleksibel: { label: "🔄 Mest fleksibel", className: "bg-blue-600 text-white" },
 };
 
 export default function MatkasseCard({ m, rank }: { m: Matkasse; rank: number }) {
   const badge = m.badge ? badgeMap[m.badge] : null;
-  const isBest = rank === 1;
 
   return (
-    <div className={`bg-white rounded-2xl overflow-hidden transition-shadow duration-300 hover:shadow-xl ${
-      isBest ? "ring-2 ring-brand-terra shadow-lg" : "shadow-card border border-gray-100"
+    <div className={`bg-white rounded-2xl overflow-hidden transition-all duration-300 hover:shadow-xl ${
+      rank === 1 ? "ring-2 ring-brand-terra shadow-lg" : "shadow-md border border-gray-100"
     }`}>
-      {/* Top bar med badge */}
       {badge && (
-        <div className={`${badge.color} text-sm font-bold px-5 py-2 flex items-center gap-2`}>
-          <span>{badge.label}</span>
+        <div className={`${badge.className} px-5 py-2.5 text-sm font-bold flex items-center gap-2`}>
+          {badge.label}
         </div>
       )}
 
-      <div className="p-5 md:p-6">
-        {/* Header: logo + navn + rating */}
-        <div className="flex items-start gap-4 mb-4">
-          {/* Logo */}
-          <div className="w-16 h-16 rounded-xl border border-gray-100 bg-gray-50 flex items-center justify-center overflow-hidden shrink-0 shadow-sm">
-            <Image
+      <div className="p-5 md:p-7">
+        {/* Header */}
+        <div className="flex items-start gap-4 mb-5">
+          <div className="w-16 h-16 rounded-xl border border-gray-100 bg-gray-50 overflow-hidden shrink-0 shadow-sm">
+            <LogoAvatar
               src={m.logoUrl}
-              alt={`${m.navn} logo`}
-              width={56}
-              height={56}
-              className="object-contain p-1"
-              unoptimized
+              alt={m.navn}
+              fallbackInitials={m.fallbackInitials}
+              fallbackColor={m.fallbackColor}
             />
           </div>
-
           <div className="flex-1 min-w-0">
-            <div className="flex items-center gap-2 flex-wrap">
-              <span className="text-brand-muted text-sm font-medium">#{rank}</span>
+            <div className="flex items-center gap-2 flex-wrap mb-1">
+              <span className="text-sm text-gray-400 font-medium">#{rank}</span>
               <h3 className="text-xl font-extrabold text-brand-charcoal">{m.navn}</h3>
             </div>
-            <div className="flex items-center gap-3 mt-1 flex-wrap">
-              <StarRating rating={m.rating} />
-              <span className="text-xs text-brand-muted">({m.antalltester} tester)</span>
-            </div>
-            <p className="text-sm text-brand-muted mt-1 line-clamp-2">{m.tagline}</p>
+            <StarRating rating={m.rating} />
+            <p className="text-sm text-brand-muted mt-1.5">{m.tagline}</p>
           </div>
-
-          {/* Pris */}
           <div className="text-right shrink-0 hidden sm:block">
-            <div className="text-2xl font-black text-brand-terra leading-none">{m.prisPerPorsjon} kr</div>
-            <div className="text-xs text-brand-muted mt-0.5">per porsjon</div>
-            <div className="text-sm font-medium text-brand-charcoal mt-1">fra {m.ukentligPris} kr/uke</div>
+            <div className="text-3xl font-black text-brand-terra leading-none">{m.prisPerPorsjon}kr</div>
+            <div className="text-xs text-gray-400 mt-0.5">per porsjon</div>
+            <div className="text-sm font-semibold text-gray-600 mt-1">fra {m.ukentligPris}kr/uke</div>
           </div>
         </div>
 
-        {/* Pris mobil */}
-        <div className="sm:hidden flex justify-between items-center bg-brand-beige rounded-lg px-4 py-2 mb-4">
-          <span className="text-sm text-brand-muted">Pris per porsjon</span>
-          <div>
-            <span className="text-xl font-black text-brand-terra">{m.prisPerPorsjon} kr</span>
-            <span className="text-xs text-brand-muted ml-1">/ fra {m.ukentligPris} kr/uke</span>
-          </div>
+        {/* Pris — mobil */}
+        <div className="sm:hidden flex justify-between items-center bg-gray-50 rounded-xl px-4 py-3 mb-4">
+          <span className="text-sm text-gray-500">Pris per porsjon</span>
+          <span className="text-2xl font-black text-brand-terra">{m.prisPerPorsjon} kr</span>
         </div>
 
-        {/* Nøkkelinfo-rad */}
+        {/* Meta-info */}
         <div className="grid grid-cols-2 gap-2 mb-4 text-sm">
-          <div className="bg-brand-beige rounded-lg px-3 py-2">
-            <span className="text-brand-muted text-xs block">Bindingstid</span>
-            <span className="font-semibold text-brand-charcoal">{m.bindingstid}</span>
+          <div className="bg-gray-50 rounded-xl px-3 py-2.5">
+            <span className="text-xs text-gray-400 block mb-0.5">Bindingstid</span>
+            <span className="font-semibold text-gray-700">{m.bindingstid}</span>
           </div>
-          <div className="bg-brand-beige rounded-lg px-3 py-2">
-            <span className="text-brand-muted text-xs block">Levering</span>
-            <span className="font-semibold text-brand-charcoal">{m.levering}</span>
+          <div className="bg-gray-50 rounded-xl px-3 py-2.5">
+            <span className="text-xs text-gray-400 block mb-0.5">Levering</span>
+            <span className="font-semibold text-gray-700">{m.levering}</span>
           </div>
         </div>
 
-        {/* Fordeler / ulemper */}
-        <div className="grid grid-cols-1 md:grid-cols-2 gap-x-6 gap-y-1 mb-4">
+        {/* Fordeler/ulemper */}
+        <div className="grid md:grid-cols-2 gap-x-6 gap-y-1.5 mb-4">
           {m.fordeler.map((f) => (
             <div key={f} className="flex items-start gap-2 text-sm">
-              <Check size={15} className="text-brand-sage mt-0.5 shrink-0" />
-              <span className="text-brand-charcoal">{f}</span>
+              <Check size={14} className="text-brand-sage mt-0.5 shrink-0" />
+              <span className="text-gray-700">{f}</span>
             </div>
           ))}
           {m.ulemper.map((u) => (
             <div key={u} className="flex items-start gap-2 text-sm">
-              <XIcon size={15} className="text-brand-terra mt-0.5 shrink-0" />
-              <span className="text-brand-muted">{u}</span>
+              <XIcon size={14} className="text-brand-terra mt-0.5 shrink-0" />
+              <span className="text-gray-400">{u}</span>
             </div>
           ))}
         </div>
 
         {/* Passer for */}
-        <div className="text-sm bg-brand-sage-pale border border-brand-sage/20 rounded-lg px-3 py-2 mb-5 text-brand-sage font-medium">
-          ✓ Passer best for: {m.passerFor}
+        <div className="text-sm bg-brand-sage-pale border border-brand-sage/20 rounded-xl px-4 py-2.5 mb-4 text-brand-sage font-medium">
+          ✓ Passer for: {m.passerFor}
         </div>
 
-        {/* Tilbud banner */}
+        {/* Tilbud */}
         {m.tilbud && (
-          <div className="bg-amber-50 border border-amber-200 rounded-lg px-3 py-2 mb-4 text-sm text-amber-800 font-medium flex items-center gap-2">
-            🎁 <span>{m.tilbud}</span>
+          <div className="bg-amber-50 border border-amber-200 rounded-xl px-4 py-2.5 mb-5 text-sm text-amber-800 font-semibold flex items-center gap-2">
+            🎁 {m.tilbud}
           </div>
         )}
 
-        {/* CTAs */}
+        {/* CTA */}
         <div className="flex flex-col sm:flex-row gap-3">
           <a
             href={m.affiliateUrl}
             target="_blank"
             rel="noopener sponsored"
-            className="btn-primary flex-1 justify-center text-base"
+            className="btn-primary flex-1 justify-center text-base py-3.5"
           >
-            Gå til {m.leverandor}
+            {m.ctaText}
             <ExternalLink size={15} />
           </a>
-          <Link
-            href={`/matkasse/${m.slug}`}
-            className="btn-secondary justify-center sm:w-auto"
-          >
-            Les vår test
-            <ChevronRight size={15} />
+          <Link href={`/matkasse/${m.slug}`} className="btn-secondary justify-center">
+            Les test <ChevronRight size={15} />
           </Link>
         </div>
-        <p className="text-xs text-brand-muted text-center mt-2">
-          * Affiliatelenke — vi tjener provisjon, uten kostnad for deg
+        <p className="text-xs text-center text-gray-400 mt-2">
+          Affiliatelenke – ingen ekstra kostnad for deg
         </p>
       </div>
     </div>

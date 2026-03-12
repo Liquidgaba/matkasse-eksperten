@@ -5,27 +5,16 @@ import Footer from "@/components/Footer";
 
 export const metadata: Metadata = {
   title: {
-    default: "Matkasse-Eksperten – Uavhengige tester av norske matkasser",
+    default: "Matkasse-Eksperten – Uavhengige tester og sammenligninger",
     template: "%s | Matkasse-Eksperten",
   },
   description:
-    "Vi har testet alle de store matkassene i Norge. Finn den som passer deg best – etter pris, utvalg, fleksibilitet og smak. Sist oppdatert mars 2026.",
+    "Vi tester og sammenligner matkasser slik at du slipper. Finn den som passer deg – etter pris, utvalg, fleksibilitet og smak.",
   metadataBase: new URL("https://matkasse-eksperten.no"),
-  openGraph: {
-    type: "website",
-    locale: "nb_NO",
-    siteName: "Matkasse-Eksperten",
-  },
-  alternates: {
-    canonical: "https://matkasse-eksperten.no",
-  },
+  openGraph: { type: "website", locale: "nb_NO", siteName: "Matkasse-Eksperten" },
 };
 
-export default function RootLayout({
-  children,
-}: {
-  children: React.ReactNode;
-}) {
+export default function RootLayout({ children }: { children: React.ReactNode }) {
   return (
     <html lang="nb">
       <body>
